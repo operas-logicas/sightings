@@ -1,24 +1,41 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import App from '../App.vue'
+import Login from '../views/auth/Login.vue'
+import Register from '../views/auth/Register.vue'
+import SightingDetail from '../views/SightingDetail.vue'
+import SightingForm from '../views/SightingForm.vue'
 
-const routes: Array<RouteRecordRaw> = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    component: App,
+    name: 'home'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    component: Login,
+    name: 'login'
+  },
+  {
+    path: '/post',
+    component: SightingForm,
+    name: 'post'
+  },
+  {
+    path: '/register',
+    component: Register,
+    name: 'register'
+  },
+  {
+    path: '/sighting/:id',
+    component: SightingDetail,
+    name: 'sighting'
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
+  linkActiveClass: 'is-active',
   routes
 })
 
