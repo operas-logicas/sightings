@@ -92,10 +92,6 @@ export default defineComponent({
       error: false
     })
 
-    if (Auth.isLoggedIn()) {
-      emit('closeModal')
-    }
-
     function validateErrors(field: keyof typeof state.errors) {
       return state.errors && state.errors[field] ? state.errors[field] : null
     }

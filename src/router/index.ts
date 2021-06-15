@@ -1,35 +1,46 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import App from '../App.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 import SightingDetail from '../views/SightingDetail.vue'
 import SightingForm from '../views/SightingForm.vue'
+import { isLoggedIn } from '../shared/auth'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: App,
-    name: 'home'
+    name: 'home',
+    component: App
   },
   {
     path: '/login',
+    name: 'login',
     component: Login,
-    name: 'login'
+    beforeEnter: (to, from) => {
+      if (isLoggedIn()) return { name: 'home' }
+    }
   },
   {
     path: '/post',
+    name: 'post',
     component: SightingForm,
-    name: 'post'
+    beforeEnter: (to, from) => {
+      if (!isLoggedIn()) return { name: 'login' }
+    }
   },
   {
     path: '/register',
+    name: 'register',
     component: Register,
-    name: 'register'
+    beforeEnter: (to, from) => {
+      if (isLoggedIn()) return { name: 'home' }
+    }
   },
   {
     path: '/sighting/:id',
-    component: SightingDetail,
-    name: 'sighting'
+    name: 'sighting',
+    component: SightingDetail
   }
 ]
 

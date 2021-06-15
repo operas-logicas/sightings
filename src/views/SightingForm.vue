@@ -152,7 +152,6 @@ import axios from 'axios'
 import { defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import * as Auth from '../shared/auth'
 import getCurrentState from '../shared/getCurrentState'
 
 interface Error {
@@ -168,11 +167,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter()
     const store = useStore()
-
-    if (!Auth.isLoggedIn()) {
-      emit('closeModal')
-      router.push({ name: 'login' })
-    }
 
     const state = reactive({
       title: '',

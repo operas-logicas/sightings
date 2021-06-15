@@ -100,10 +100,6 @@ export default defineComponent({
     const router = useRouter()
     const store = useStore()
 
-    if (Auth.isLoggedIn()) {
-      emit('closeModal')
-    }
-
     const state = reactive({
       user: {
         handle: (str_shuffle('abcdef0123456789')).slice(0, 6),
