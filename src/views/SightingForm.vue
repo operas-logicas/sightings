@@ -155,6 +155,15 @@ import { useStore } from 'vuex'
 import * as Auth from '../shared/auth'
 import getCurrentState from '../shared/getCurrentState'
 
+interface Error {
+  title?: string[];
+  date?: string[];
+  description?: string[];
+  image?: string[];
+  coords?: string[];
+  currentState?: string[];
+}
+
 export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter()
@@ -169,39 +178,31 @@ export default defineComponent({
       title: '',
       date: '',
       description: '',
-      image: {} as File,
+      image: null as unknown as File,
       coords: [
         store.state.currentPosition[0],
         store.state.currentPosition[1]
       ] as number[],
       currentState: '',
-
-      errors: {} as {
-        title?: string[];
-        date?: string[];
-        description?: string[];
-        image?: string[];
-        coords?: string[];
-        currentState?: string[];
-      },
+      errors: null as unknown as Error,
       sending: false,
       error: false,
     })
 
     function validateErrors(field: keyof typeof state.errors) {
-      return state.errors && state.errors[field] ? state.errors[field] : {}
+      return state.errors && state.errors[field] ? state.errors[field] : null
     }
 
     function uploadFile(event: Event) {
       const element = event.target as HTMLInputElement
       state.image = element.files && element.files[0]
         ? element.files[0]
-        : {} as File
+        : null as unknown as File
     }
 
     async function submit() {
       state.sending = true
-      state.errors = {}
+      state.errors = null as unknown as Error
 
       try {
         state.currentState = await getCurrentState(state.coords)

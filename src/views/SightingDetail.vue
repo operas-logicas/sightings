@@ -51,7 +51,7 @@ export default defineComponent({
 
     const state = reactive({
       // eslint-disable-next-line no-undef
-      sighting: {} as Sighting,
+      sighting: null as unknown as Sighting,
       niceDate: '',
       hasLikes: false,
       loading: true

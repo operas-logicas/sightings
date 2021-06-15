@@ -63,7 +63,7 @@ export default defineComponent({
     watch(
       () => store.state.sightings,
       topSightings,
-      { deep: true }
+      { deep: true, immediate: true }
     )
 
     return {

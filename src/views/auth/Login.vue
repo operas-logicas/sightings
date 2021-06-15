@@ -74,6 +74,11 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import * as Auth from '../../shared/auth'
 
+interface Error {
+  handle?: string[];
+  password?: string[];
+}
+
 export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter()
@@ -82,10 +87,7 @@ export default defineComponent({
     const state = reactive({
       handle: '',
       password: '',
-      errors: {} as {
-        handle?: string[];
-        password?: string[];
-      },
+      errors: null as unknown as Error,
       sending: false,
       error: false
     })
@@ -95,12 +97,12 @@ export default defineComponent({
     }
 
     function validateErrors(field: keyof typeof state.errors) {
-      return state.errors && state.errors[field] ? state.errors[field] : {}
+      return state.errors && state.errors[field] ? state.errors[field] : null
     }
 
     async function login() {
       state.sending = true
-      state.errors = {}
+      state.errors = null as unknown as Error
 
       try {
         // Initialize CSRF Protection

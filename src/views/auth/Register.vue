@@ -89,6 +89,12 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import * as Auth from '../../shared/auth'
 
+interface Error {
+  handle?: string[];
+  password?: string[];
+  password_confirmation?: string[];
+}
+
 export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter()
@@ -104,22 +110,18 @@ export default defineComponent({
         password: '',
         password_confirmation: ''
       },
-      errors: {} as {
-        handle?: string[];
-        password?: string[];
-        password_confirmation?: string[];
-      },
+      errors: null as unknown as Error,
       sending: false,
       error: false
     })
 
     function validateErrors(field: keyof typeof state.errors) {
-      return state.errors && state.errors[field] ? state.errors[field] : {}
+      return state.errors && state.errors[field] ? state.errors[field] : null
     }
 
     async function register() {
       state.sending = true
-      state.errors = {}
+      state.errors = null as unknown as Error
 
       try {
         const response = await axios.post(`/register`, state.user)

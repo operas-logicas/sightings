@@ -8,7 +8,7 @@ export default createStore({
     sightings: [] as Sighting[],
     currentPosition: [] as number[],
     isLoggedIn: false,
-    user: {} as User,
+    user: null as unknown as User,
   },
 
   mutations: {
