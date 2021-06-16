@@ -2,7 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-// const connectToMongoDB = require('./config/db')
+const connectToMongoDB = require('./config/db')
 const setEnvironment = require('./config/env')
 // const registerRoutes = require('./routes')
 
@@ -10,7 +10,7 @@ const app = express()
 
 // Initialization
 setEnvironment(app)
-// connectToMongoDB()
+connectToMongoDB()
 // registerRoutes(app)
 
 app.get('/', (req, res) => {
