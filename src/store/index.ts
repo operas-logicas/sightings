@@ -1,7 +1,7 @@
-import axios from 'axios'
 import moment from 'moment'
-import Auth from '../services/AuthService'
 import { createStore } from 'vuex'
+import Auth from '../services/AuthService'
+import http from '../services/HttpService'
 
 const protocol = window.location.protocol
 const hostname = window.location.hostname
@@ -9,10 +9,10 @@ let port: number;
 
 // Development
 if (hostname === 'localhost')
-  port = protocol === 'https' ? 3001 : 3000
+  port = protocol === 'https:' ? 3001 : 3000
 
 // Production
-else port = protocol === 'https' ? 5001 : 5000
+else port = protocol === 'https:' ? 5001 : 5000
 
 export default createStore({
   state: {
@@ -62,7 +62,7 @@ export default createStore({
     async loadUser({ commit, dispatch }, id: string) {
       if (Auth.isLoggedIn()) {
         try {
-          const user: User = (await axios.get(`api/users/${id}`)).data
+          const user: User = (await http().get(`users/${id}`)).data
           commit('setUser', user)
           commit('setLoggedIn', true)
         } catch (error) {

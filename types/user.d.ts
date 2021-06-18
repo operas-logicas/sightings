@@ -1,6 +1,6 @@
 interface User {
   _id: number;
   handle: string;
-  created_at: Date;
-  updated_at: Date;  
+  createdAt: Date;
+  updatedAt: Date;  
 }

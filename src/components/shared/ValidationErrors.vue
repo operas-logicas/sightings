@@ -12,7 +12,7 @@ import { defineComponent, PropType } from 'vue'
 export default defineComponent({
   props: {
     errors: {
-      type: Array as PropType<string[]>,
+      type: null || Array as PropType<string[]>,
       required: true
     }
   },

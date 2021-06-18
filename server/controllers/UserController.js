@@ -8,7 +8,7 @@ class UserController {
       const users = await User
         .find()
         .sort('handle')
-        .select('-password -_v')
+        .select('-password -__v')
       
       return res.status(200).json({ users })
 

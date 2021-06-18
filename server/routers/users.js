@@ -4,9 +4,9 @@ const userController = require('../controllers/UserController')
 const router = express.Router()
 
 // GET api/users
-router.get('/:id', userController.index)
+router.get('/', userController.index)
 
 // GET api/users/:id
-router.get('/', userController.show)
+router.get('/:id', userController.show)
 
 module.exports = router

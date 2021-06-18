@@ -41,7 +41,7 @@
       </div>
 
       <div class="field">
-        <label class="label">Password</label>
+        <label class="label">Password Confirmation</label>
         <div class="control">
           <input
             class="input"
@@ -76,18 +76,20 @@
         :disabled="sending"
       >Cancel</button>
 
-      <p v-if="sending" class="i">Logging in...</p>
+      <p v-if="sending" class="i">Creating user...</p>
     </footer>
   </div>
 </template>
 
 <script lang="ts">
-import { str_shuffle } from 'locutus/php/strings/str_shuffle'
+import * as locutus from 'locutus'
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import Auth from '../../services/AuthService'
 import http from '../../services/HttpService'
+
+const str_shuffle = locutus.php.strings.str_shuffle
 
 interface Error {
   handle?: string[];
@@ -102,7 +104,7 @@ export default defineComponent({
 
     const state = reactive({
       user: {
-        handle: (str_shuffle('abcdef0123456789')).slice(0, 6),
+        handle: str_shuffle('abcdef0123456789').slice(0, 6) as string,
         password: '',
         password_confirmation: ''
       },
