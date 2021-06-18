@@ -1,5 +1,7 @@
 const crypto = require('crypto')
+const Joi = require('joi')
 const mongoose = require('mongoose')
+const passwordComplexity = require('joi-password-complexity')
 
 const userSchema = new mongoose.Schema({
   handle: {
@@ -18,8 +20,48 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set('timestamps', true)
 
+// Validate request - user (register)
+userSchema.statics.validateUser =
+  body => {
+    const schema = Joi.object({
+      handle: Joi.string()
+        .required()
+        .length(6),
+
+      password: passwordComplexity({
+        min: 8,
+        max: 50,
+        numeric: 1,
+        symbol: 1
+      }),
+
+      password_confirmation: Joi.string()
+        .required()
+        .valid(Joi.ref('password'))
+    })
+
+    return schema.validate(body)
+  }
+
+// Validate request - auth (login)
+userSchema.statics.validateAuth =
+  body => {
+    const schema = Joi.object({
+      handle: Joi.string()
+        .required()
+        .length(6),
+      
+      password: Joi.string()
+        .required()
+        .min(8)
+        .max(50)
+    })
+
+    return schema.validate(body)
+  }
+
+// Hash password
 userSchema.pre('save', function(next) {
-  // Hash password
   const salt = crypto.randomBytes(16).toString('hex')
 
   crypto.scrypt(this.password, salt, 64, (err, derivedKey) => {
