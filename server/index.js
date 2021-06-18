@@ -4,14 +4,14 @@ const http = require('http')
 const https = require('https')
 const connectToMongoDB = require('./config/db')
 const setEnvironment = require('./config/env')
-// const registerRoutes = require('./routes')
+const registerRoutes = require('./routes')
 
 const app = express()
 
 // Initialization
 setEnvironment(app)
 connectToMongoDB()
-// registerRoutes(app)
+registerRoutes(app)
 
 app.get('/', (req, res) => {
   if (process.env.NODE_ENV !== 'production')

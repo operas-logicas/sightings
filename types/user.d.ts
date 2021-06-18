@@ -1,5 +1,5 @@
 interface User {
-  id: number;
+  _id: number;
   handle: string;
   created_at: Date;
   updated_at: Date;  
