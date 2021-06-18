@@ -5,7 +5,7 @@ import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 import SightingDetail from '../views/SightingDetail.vue'
 import SightingForm from '../views/SightingForm.vue'
-import { isLoggedIn } from '../shared/auth'
+import Auth from '../services/AuthService'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
     name: 'login',
     component: Login,
     beforeEnter: (to, from) => {
-      if (isLoggedIn()) return { name: 'home' }
+      if (Auth.isLoggedIn()) return { name: 'home' }
     }
   },
   {
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
     name: 'post',
     component: SightingForm,
     beforeEnter: (to, from) => {
-      if (!isLoggedIn()) return { name: 'login' }
+      if (!Auth.isLoggedIn()) return { name: 'login' }
     }
   },
   {
@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
     name: 'register',
     component: Register,
     beforeEnter: (to, from) => {
-      if (isLoggedIn()) return { name: 'home' }
+      if (Auth.isLoggedIn()) return { name: 'home' }
     }
   },
   {

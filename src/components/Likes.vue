@@ -17,7 +17,7 @@ import axios from 'axios'
 import { defineComponent, PropType, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import * as Auth from '../shared/auth'
+import * as Auth from '../shared/AuthService'
 
 export default defineComponent({
   props: {

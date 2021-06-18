@@ -82,12 +82,12 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
 import { str_shuffle } from 'locutus/php/strings/str_shuffle'
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import * as Auth from '../../shared/auth'
+import Auth from '../../services/AuthService'
+import http from '../../services/HttpService'
 
 interface Error {
   handle?: string[];
@@ -120,11 +120,11 @@ export default defineComponent({
       state.errors = null as unknown as Error
 
       try {
-        const response = await axios.post(`/register`, state.user)
+        const response = await http().post(`/register`, state.user)
         if (response.status === 201) {
           // Login user
           Auth.logIn()
-          await store.dispatch('loadUser')
+          await store.dispatch('loadUser', response.data.user_id)
 
           state.sending = false
 
