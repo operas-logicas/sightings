@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
 import { defineComponent, PropType, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import * as Auth from '../shared/AuthService'
+import Auth from '../services/AuthService'
+import http from '../services/HttpService'
 
 export default defineComponent({
   props: {
@@ -51,11 +51,8 @@ export default defineComponent({
 
       // Try incrementing first
       try {
-        // Initialize CSRF Protection
-        await axios.get(`/sanctum/csrf-cookie`)
-
-        const response = await axios.post(
-          `/api/likes`,
+        const response = await http().post(
+          `/likes`,
           {
             sighting_id: props.sighting.id
           }

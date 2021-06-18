@@ -31,11 +31,11 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
 import moment from 'moment'
 import { defineComponent, reactive, toRefs, watch} from 'vue'
 import { useRoute } from 'vue-router'
 import Likes from '../components/Likes.vue'
+import http from '../services/HttpService'
 
 export default defineComponent({
   components: {
@@ -60,8 +60,8 @@ export default defineComponent({
     // 'onCreated' load sighting
     (async function() {
       try {
-        state.sighting = (await axios.get(
-          `/api/sightings/${route.params.id}`)
+        state.sighting = (await http().get(
+          `/sightings/${route.params.id}`)
         ).data.data
       } catch (error) {
           console.log(error)

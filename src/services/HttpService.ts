@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
-// import * as Auth from './auth'
+// import Auth from './auth'
 import store from '../store'
 
 export default function http(): AxiosInstance {

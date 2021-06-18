@@ -37,14 +37,14 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
 import { defineComponent, reactive, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
 import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 import Sighting from './Sighting.vue'
-import formatCoords from '../shared/formatCoords'
-import getCurrentState from '../shared/getCurrentState'
+import formatCoords from '../services/formatCoords'
+import getCurrentState from '../services/getCurrentState'
+import http from '../services/HttpService'
 
 type Position = {
   coords?: {
@@ -111,8 +111,8 @@ export default defineComponent({
     async function getSightings() {
       try {
         state.sightings =
-          (await axios.get(
-            `/api/sightings?state=${state.currentState}`)
+          (await http().get(
+            `/sightings?state=${state.currentState}`)
           ).data.data
 
         // Save to store

@@ -148,11 +148,11 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
 import { defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import getCurrentState from '../shared/getCurrentState'
+import getCurrentState from '../services/getCurrentState'
+import http from '../services/HttpService'
 
 interface Error {
   title?: string[];
@@ -217,11 +217,8 @@ export default defineComponent({
       if (state.image) formData.append('image', state.image)
 
       try {
-        // Initialize CSRF Protection
-        await axios.get(`/sanctum/csrf-cookie`)
-
-        const response = await axios.post(
-          `/api/sightings`,
+        const response = await http().post(
+          `/sightings`,
           formData,
           {
             headers: { 'Content-Type': 'multipart/form-data' }
