@@ -85,7 +85,6 @@
 import * as locutus from 'locutus'
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import Auth from '../../services/AuthService'
 import http from '../../services/HttpService'
 
@@ -100,7 +99,6 @@ interface Error {
 export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter()
-    const store = useStore()
 
     const state = reactive({
       user: {
@@ -122,11 +120,15 @@ export default defineComponent({
       state.errors = null as unknown as Error
 
       try {
+        // Register new user
         const response = await http().post(`/register`, state.user)
+
         if (response.status === 201) {
           // Login user
-          Auth.logIn()
-          await store.dispatch('loadUser', response.data.user_id)
+          await Auth.login({
+            handle: state.user.handle,
+            password: state.user.password
+          })
 
           state.sending = false
 

@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { createStore } from 'vuex'
 import Auth from '../services/AuthService'
-import http from '../services/HttpService'
 
 const protocol = window.location.protocol
 const hostname = window.location.hostname
@@ -55,26 +54,15 @@ export default createStore({
   },
 
   actions: {
-    loadStoredUser({ commit }) {
-      commit('setLoggedIn', Auth.isLoggedIn())
-    },
-
-    async loadUser({ commit, dispatch }, id: string) {
+    authenticate({ commit }) {
       if (Auth.isLoggedIn()) {
-        try {
-          const user: User = (await http().get(`users/${id}`)).data
-          commit('setUser', user)
-          commit('setLoggedIn', true)
-        } catch (error) {
-          dispatch('logout')
-        }
+        const user = Auth.getUser()
+        commit('setUser', user)
+        commit('setLoggedIn', true)
+      } else {
+        commit('setUser', null)
+        commit('setLoggedIn', false)
       }
-    },
-
-    logout({ commit }) {
-      commit('setUser', null)
-      commit('setLoggedIn', false)
-      Auth.logOut()
     }
   },
 

@@ -17,7 +17,7 @@
             type="text"
             name="handle"
             placeholder="Enter your user handle"
-            v-model="handle"
+            v-model="user.handle"
             :class="[
               { 'is-danger': validateErrors('handle') }
             ]"
@@ -34,7 +34,7 @@
             type="password"
             name="password"
             placeholder="Enter your password"
-            v-model="password"
+            v-model="user.password"
             :class="[
               { 'is-danger': validateErrors('password') }
             ]"
@@ -70,9 +70,7 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import Auth from '../../services/AuthService'
-import http from '../../services/HttpService'
 
 interface Error {
   handle?: string[];
@@ -82,11 +80,12 @@ interface Error {
 export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter()
-    const store = useStore()
 
     const state = reactive({
-      handle: '',
-      password: '',
+      user: {
+        handle: '',
+        password: ''
+      },
       errors: null as unknown as Error,
       sending: false,
       error: false
@@ -101,21 +100,9 @@ export default defineComponent({
       state.errors = null as unknown as Error
 
       try {
-        await http().post(
-          `/login`,
-          {
-            handle: state.handle,
-            password: state.password
-          }
-        )
-
-        // Login user:
-        // - Set logged in status in browser local storage
-        // - Load authenticated user from server
-        // - Store user and logged in status in global store
-        Auth.logIn()
-        await store.dispatch('loadUser')
-
+        // Login user
+        await Auth.login(state.user)
+        
         state.sending = false
 
         // Close modal

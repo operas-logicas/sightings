@@ -1,6 +1,9 @@
 const crypto = require('crypto')
 const Joi = require('joi')
 const mongoose = require('mongoose')
+const { promisify } = require('util')
+
+const scrypt = promisify(crypto.scrypt)
 
 const userSchema = new mongoose.Schema({
   handle: {
@@ -20,7 +23,7 @@ const userSchema = new mongoose.Schema({
 userSchema.set('timestamps', true)
 
 // Validate request - user (register)
-userSchema.statics.validateUser =
+userSchema.statics.validateRequestUser =
   body => {
     const schema = Joi.object({
       handle: Joi.string()
@@ -41,7 +44,7 @@ userSchema.statics.validateUser =
   }
 
 // Validate request - auth (login)
-userSchema.statics.validateAuth =
+userSchema.statics.validateRequestAuth =
   body => {
     const schema = Joi.object({
       handle: Joi.string()
@@ -57,14 +60,23 @@ userSchema.statics.validateAuth =
     return schema.validate(body, { abortEarly: false })
   }
 
-// Hash password
+// Validate password
+userSchema.statics.validatePassword =
+  async (password, hashed) => {
+    const [salt, hash] = hashed.split(':')
+
+    const bufferKey = Buffer.from(hash, 'hex')
+    const derivedKey = await scrypt(password, salt, 64)
+
+    return crypto.timingSafeEqual(bufferKey, derivedKey)
+  }
+
+// Hash password on save
 userSchema.pre('save', async function(next) {
   const salt = crypto.randomBytes(16).toString('hex')
 
-  await crypto.scrypt(this.password, salt, 64, (err, derivedKey) => {
-    if (err) throw err
-    this.password = salt + ':' + derivedKey.toString('hex')
-  })
+  const derivedKey = await scrypt(this.password, salt, 64)
+  this.password = salt + ':' + derivedKey.toString('hex')
 
   next()
 })

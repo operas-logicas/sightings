@@ -15,12 +15,9 @@ app.component('fatal-error', FatalError)
 app.use(store)
 app.use(router)
 
-app.mount('#app')
+app.mount('#app');
 
-// Load logged in status from browser local storage
-// Load authenticated user from server and set in global store
-const init = async () => {
-  await store.dispatch('loadStoredUser')
-  await store.dispatch('loadUser')
-}
-init()
+// If user is logged in already, load from local storage
+(async () => {
+  await store.dispatch('authenticate')
+})()

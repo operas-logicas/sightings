@@ -1,5 +1,6 @@
-const _ = require('lodash')
 const User = require('../models/User')
+const errorsResource = require('../resources/errorsResource')
+const userShowResource = require('../resources/userShowResource')
 
 class RegisterController {
   // Register new user
@@ -11,13 +12,13 @@ class RegisterController {
     }
 
     // Validate request
-    const { error } = User.validateUser(req.body)
+    const { error } = User.validateRequestUser(req.body)
     if (error) {
       // Return errors
       for (const field in error.details)
         errors[error.details[field].path].push(error.details[field].message)
 
-      return res.status(422).json({ errors: _.pickBy(errors, x => x.length > 0) })
+      return res.status(422).json(errorsResource(errors))
     }
 
     // Save new user
@@ -28,12 +29,13 @@ class RegisterController {
       })
 
       await user.save()
-      return res.status(201).json({ user_id: user._id })
+
+      return res.status(201).json(userShowResource(user))
 
     } catch (error) {
       if (error.code === 11000) {
         errors.handle.push('"handle" already taken')
-        return res.status(422).json({ errors: _.pickBy(errors, x => x.length > 0) })
+        return res.status(422).json(errorsResource(errors))
       }
 
       return res.status(500).json({ error: error.message })

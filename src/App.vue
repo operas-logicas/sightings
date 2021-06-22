@@ -42,6 +42,10 @@
               <a v-if="isLoggedIn" @click.prevent="logout" href="#" class="navbar-item">
                 Logout
               </a>
+              <a v-if="isLoggedIn" href="#" class="navbar-item is-disabled">
+                <strong>User:&nbsp;</strong>
+                {{ userHandle }}
+              </a>
             </div>
           </div>
         </div>
@@ -72,13 +76,13 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
 import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter, useRoute, RouteRecordName } from 'vue-router'
 import { useStore } from 'vuex'
 import Map from './components/Map.vue'
 import Modal from './components/Modal.vue'
 import SightingList from './components/SightingList.vue'
+import Auth from './services/AuthService'
 
 export default defineComponent({
   components: {
@@ -99,13 +103,13 @@ export default defineComponent({
     })
 
     const isLoggedIn = computed((): boolean => store.state.isLoggedIn)
+    const userHandle = computed((): string => store.state.user.handle)
 
     async function logout() {
       try {
-        await axios.post(`/logout`)
-        await store.dispatch('logout')
+        await Auth.logout()
       } catch (error) {
-        await store.dispatch('logout')
+        await Auth.logout()
       }
     }
 
@@ -137,6 +141,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       isLoggedIn,
+      userHandle,
       logout,
       toggleNavbarMenu,
       showModal,
@@ -171,5 +176,15 @@ export default defineComponent({
 
 .navbar-item.is-active:hover {
   background-color: black !important;
+}
+
+.navbar-item.is-disabled:focus {
+  background-color: inherit !important;
+  cursor: text !important;
+}
+
+.navbar-item.is-disabled:hover {
+  background-color: inherit !important;
+  cursor: text !important;
 }
 </style>
