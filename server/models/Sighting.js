@@ -37,7 +37,7 @@ const sightingSchema = new mongoose.Schema({
     maxLength: 255
   },
 
-  user_id: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }

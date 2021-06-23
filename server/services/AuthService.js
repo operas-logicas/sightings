@@ -27,7 +27,6 @@ function generateAuthToken(user) {
 function requireLogin(req, res, next) {
   const user = _decodeAuthToken(req)
   if (!user)
-    // TODO confirm this is the response we want to send
     return res.status(422).json({ error: 'Not authorized! Please login.' })
 
   next()
