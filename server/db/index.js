@@ -1,6 +1,7 @@
 const express = require('express')
 const connectToMongoDB = require('../config/db')
 const setEnvironment = require('../config/env')
+const sightingSeeder = require('./sightingsSeeder')
 const usersSeeder = require('./usersSeeder')
 
 const app = express();
@@ -12,6 +13,7 @@ const app = express();
 
   // Rollback and seed collections
   await usersSeeder()
+  await sightingSeeder()
 
   // Exit
   process.exit()
