@@ -1,5 +1,5 @@
 declare interface Sighting {
-  id: string;
+  _id: string;
   title: string;
   date: Date;
   description: string;

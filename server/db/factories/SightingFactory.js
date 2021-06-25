@@ -70,7 +70,7 @@ class SightingFactory {
 
     this.date = faker.date.past(10)
 
-    this.description = faker.lorem.text()
+    this.description = faker.lorem.paragraph()
 
     this.location =
       faker.address.latitude(this._max_lat, this._min_lat, 6) + ','

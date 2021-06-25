@@ -1,6 +1,6 @@
 const express = require('express')
 const sightingController = require('../controllers/SightingController')
-const { requireLogin } = require('../services/AuthService')
+// const { requireLogin } = require('../services/AuthService')
 
 const router = express.Router()
 
@@ -11,6 +11,6 @@ router.get('/', sightingController.index)
 router.get('/:id', sightingController.show)
 
 // POST api/sightings
-router.post('/:id', requireLogin, sightingController.store)
+// router.post('/:id', requireLogin, sightingController.store)
 
 module.exports = router

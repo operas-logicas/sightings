@@ -27,7 +27,7 @@
         :lat-lng="sighting.location.split(',')"
       >
         <l-popup>
-          <router-link :to="{ name: 'sighting', params: { id: sighting.id } }">
+          <router-link :to="{ name: 'sighting', params: { id: sighting._id } }">
             <sighting :sighting="sighting" />
           </router-link>
         </l-popup>
@@ -126,9 +126,9 @@ export default defineComponent({
     }
 
     // 'onCreated' get current position and load map
-    (async () => {
+    (() => {
       if (navigator.geolocation)
-        await navigator.geolocation.getCurrentPosition(
+        navigator.geolocation.getCurrentPosition(
           // Success
           renderMap,
 

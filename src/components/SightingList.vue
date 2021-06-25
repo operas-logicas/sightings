@@ -15,7 +15,7 @@
       v-for="(sighting, i) in sightings"
       :key="`sighting-${i}`" class="mb-5"
     >
-      <router-link :to="{ name: 'sighting', params: { id: String(sighting.id) } }">
+      <router-link :to="{ name: 'sighting', params: { id: String(sighting._id) } }">
         <sighting :sighting="sighting" class="sighting" />
       </router-link>
     </div>
