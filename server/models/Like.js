@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 
 const likeSchema = new mongoose.Schema({
-  sighting_id: {
+  sighting: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Sighting'
   },
 
-  user_id: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }
