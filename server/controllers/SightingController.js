@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const Like = require('../models/Like')
 const Sighting = require('../models/Sighting')
 const User = require('../models/User')
 const sightingShowResource = require('../resources/sightingShowResource')
@@ -17,8 +18,8 @@ class SightingController {
         const user = await User.findById(sighting.user)
         sighting.user_handle = user.handle
 
-        // TODO get likes from likes collection
-        sighting.likes = _.random(27)
+        const likes = await Like.find({ sighting: sighting._id })
+        sighting.likes = likes.length
 
         sightingsIndex.push(sightingShowResource(sighting))
       }
@@ -39,8 +40,8 @@ class SightingController {
       const user = await User.findById(sighting.user)
       sighting.user_handle = user.handle
 
-      // TODO get likes from likes collection
-      sighting.likes = _.random(27)
+      const likes = await Like.find({ sighting: sighting._id })
+      sighting.likes = likes.length
 
       return res.status(201).json({ data: sightingShowResource(sighting) })
 
