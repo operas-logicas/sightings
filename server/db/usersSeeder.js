@@ -19,5 +19,5 @@ module.exports = async function() {
     await User.create(new UserFactory())
   }
 
-  console.log('Done!')
+  console.log('Done!\n')
 }

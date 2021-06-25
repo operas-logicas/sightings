@@ -11,7 +11,7 @@ module.exports = async function() {
 
   console.log('Seeding sightings...')
   const users = await User.find()
-  users.forEach(async user => {
+  users.forEach(user => {
     for (let i = 0; i < _.random(3); i++ ) {
       const sighting = new SightingFactory()
       sighting.user = user._id
@@ -19,5 +19,5 @@ module.exports = async function() {
     }
   })
   await Sighting.collection.insertMany(_sightings)
-  console.log('Done!')
+  console.log('Done!\n')
 }
