@@ -2,6 +2,7 @@
 node_modules
 /dist
 /https
+/public/images
 
 
 # local env files

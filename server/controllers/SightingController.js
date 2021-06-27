@@ -1,8 +1,9 @@
-const _ = require('lodash')
 const Like = require('../models/Like')
 const Sighting = require('../models/Sighting')
 const User = require('../models/User')
+const errorsResource = require('../resources/errorsResource')
 const sightingShowResource = require('../resources/sightingShowResource')
+const { getUserId } = require('../services/AuthService')
 
 class SightingController {
   // Find all sightings
@@ -51,9 +52,58 @@ class SightingController {
   }
 
   // Create new sighting
-  // async store(req, res) {
+  async store(req, res) {
+    const errors = {
+      title: [],
+      date: [],
+      description: [],
+      location: [],
+      state: [],
+      image: []
+    }
 
-  // }
+    // Validate request
+    const { error } = Sighting.validateRequest(req.body)
+    if (error) {
+      // Return errors
+      for (const field in error.details)
+        errors[error.details[field].path].push(error.details[field].message)
+
+      return res.status(422).json(errorsResource(errors))
+    }
+
+    // Get user id from auth token
+    const user_id = getUserId(req)
+
+    // Get logged in user
+    const user = await User.findById(user_id)
+    if (!user) res.status(500).json({ error: 'Invalid user! '})
+
+    // Save new sighting
+    try {
+      const sighting = new Sighting({
+        title: req.body.title,
+        // TODO timezone offset
+        date: req.body.date,
+        description: req.body.description,
+        location: req.body.location,
+        state: req.body.state,
+        img_path: req.file ? '/images/user/' + req.file.filename : '',
+        user
+      })
+
+      await sighting.save()
+
+      // Add user_handle and likes to the response
+      sighting.user_handle = user.handle
+      sighting.likes = 0
+
+      return res.status(201).json({ data: sightingShowResource(sighting)})
+
+    } catch (error) {
+      return res.status(500).json({ error: error.message })
+    }
+  }
 }
 
 module.exports = new SightingController()

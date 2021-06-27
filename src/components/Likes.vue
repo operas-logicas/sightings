@@ -54,7 +54,7 @@ export default defineComponent({
         const response = await http().post(
           `/likes`,
           {
-            sighting_id: props.sighting.id
+            sighting: props.sighting._id
           }
         )
 
@@ -76,7 +76,6 @@ export default defineComponent({
         store.commit('updateSighting', sighting)
 
       } catch (error) {
-        // Like already in the db so delete it instead
         if (
           error.response &&
           error.response.status &&

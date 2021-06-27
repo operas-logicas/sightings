@@ -18,7 +18,13 @@ const getUser = function(): string | jwt.JwtPayload | null {
 }
 
 const isLoggedIn = function(): boolean {
-  return localStorage.getItem('token') !== null
+  const payload = _decodeToken()
+  if (!payload) return false
+
+  const exp = (payload as jwt.JwtPayload).exp
+  if (!exp || Date.now() > exp * 1000) return false
+
+  return true
 }
 
 const login = async function(user: {
@@ -30,9 +36,8 @@ const login = async function(user: {
   store.dispatch('authenticate')
 }
 
-const logout = async function(): Promise<void> {
+const logout = function(): void {
   localStorage.clear()
-  store.dispatch('authenticate')
 }
 
 export default {

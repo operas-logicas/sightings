@@ -26,7 +26,10 @@
         <p v-if="!validateErrors('title')" class="help">
           Enter a title for the sighting
         </p>
-        <v-errors :errors="validateErrors('title')"></v-errors>
+        <v-errors
+          v-if="validateErrors('title')"
+          :errors="validateErrors('title')"
+        ></v-errors>
       </div>
 
       <div class="field">
@@ -46,7 +49,10 @@
         <p v-if="!validateErrors('date')" class="help">
           Enter the date of the event <i>(Format: YYYY-MM-DD)</i>
         </p>
-        <v-errors :errors="validateErrors('date')"></v-errors>
+        <v-errors
+          v-if="validateErrors('date')"
+          :errors="validateErrors('date')"
+        ></v-errors>
       </div>
 
       <div class="field">
@@ -77,7 +83,10 @@
           Enter latitude and longitude where the event ocurred
           <i>(current position on map shown by default)</i>
         </p>
-        <v-errors :errors="validateErrors('location')"></v-errors>
+        <v-errors
+          v-if="validateErrors('location')"
+          :errors="validateErrors('location')"
+        ></v-errors>
       </div>
 
       <div class="field">
@@ -96,7 +105,10 @@
         <p v-if="!validateErrors('description')" class="help">
           Describe what happened
         </p>
-        <v-errors :errors="validateErrors('description')"></v-errors>
+        <v-errors
+          v-if="validateErrors('description')"
+          :errors="validateErrors('description')"
+        ></v-errors>
       </div>
 
       <div class="field pb-3">
@@ -125,7 +137,10 @@
         <p v-if="!validateErrors('image')" class="help">
           Upload an image of the event
         </p>
-        <v-errors :errors="validateErrors('image')"></v-errors>
+        <v-errors
+          v-if="validateErrors('image')"
+          :errors="validateErrors('image')"
+        ></v-errors>
       </div>
     </section>
 
@@ -148,7 +163,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, watch } from 'vue'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import getCurrentState from '../services/getCurrentState'
@@ -198,6 +213,15 @@ export default defineComponent({
       state.sending = true
       state.errors = null as unknown as Error
 
+      // Check if still logged in (auth token not expired)
+      await store.dispatch('authenticate')
+      const isLoggedIn = computed((): boolean => store.state.isLoggedIn)
+      if (!isLoggedIn.value) {
+        router.push({ name: 'login' })
+        return
+      }
+
+      // Get state from coords
       try {
         state.currentState = await getCurrentState(state.coords)
       } catch (error) {
@@ -207,6 +231,7 @@ export default defineComponent({
         state.sending = false
       }
 
+      // Submit form data
       const formData = new FormData()
       if (state.title) formData.append('title', state.title)
       if (state.date) formData.append('date', state.date)
@@ -241,14 +266,29 @@ export default defineComponent({
           await router.push({
             name: 'sighting',
             params: {
-              id: sighting.id
+              id: sighting._id
             }
           })
         }
 
       } catch (error) {
-        if (error.response && error.response.status && error.response.status === 422)
+        // Form errors from request validation
+        if (
+          error.response
+          && error.response.status
+          && error.response.status === 422
+        )
           state.errors = error.response.data.errors
+
+        // Not logged in (auth token expired)
+        else if (
+          error.response
+          && error.response.status
+          && error.response.status === 403
+        )
+          await router.push({ name: 'login' })
+
+        // Fatal server error
         else state.error = true
 
       } finally {

@@ -45,8 +45,8 @@ const sightingSchema = new mongoose.Schema({
 
 sightingSchema.set('timestamps', true)
 
-// Validate request - /sightings
-sightingSchema.statics.validateSighting =
+// Validate request - sightings
+sightingSchema.statics.validateRequest =
   body => {
     const schema = Joi.object({
       title: Joi.string()
@@ -61,6 +61,7 @@ sightingSchema.statics.validateSighting =
         .required()
         .min(3),
 
+      // TODO pattern and custom message
       location: Joi.string()
         .required(),
 
@@ -68,11 +69,13 @@ sightingSchema.statics.validateSighting =
         .required()
         .min(2),
 
-      // TODO file/image upload validation
       image: Joi.any()
+        .meta({ swaggerType: 'file' })
+        .optional()
+        .description('image file')
     })
 
-    return schema.validate(body)
+    return schema.validate(body, { abortEarly: false })
   }
 
 module.exports = mongoose.model('Sighting', sightingSchema)

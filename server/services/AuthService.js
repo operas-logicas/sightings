@@ -20,19 +20,32 @@ function generateAuthToken(user) {
     handle: user.handle
   }
 
-  return jwt.sign(payload, process.env.JWT_PRIVATE_KEY)
+  const options = {
+    expiresIn: 2 * 60 * 60 // 2 hours
+  }
+
+  return jwt.sign(payload, process.env.JWT_PRIVATE_KEY, options)
 }
 
-// Require login middleware
+// Get user id from auth token
+function getUserId(req) {
+  const user = _decodeAuthToken(req)
+  if (!user) return null
+
+  return user._id
+}
+
+// Require login (auth token) middleware
 function requireLogin(req, res, next) {
   const user = _decodeAuthToken(req)
   if (!user)
-    return res.status(422).json({ error: 'Not authorized! Please login.' })
+    return res.status(403).json({ error: 'Not authorized! Please login.' })
 
   next()
 }
 
 module.exports = {
   generateAuthToken,
+  getUserId,
   requireLogin
 }

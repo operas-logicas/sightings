@@ -105,11 +105,13 @@ export default defineComponent({
     const isLoggedIn = computed((): boolean => store.state.isLoggedIn)
     const userHandle = computed((): string => store.state.user.handle)
 
-    async function logout() {
+    function logout() {
       try {
-        await Auth.logout()
+        Auth.logout()
+        store.dispatch('authenticate')
       } catch (error) {
-        await Auth.logout()
+        Auth.logout()
+        store.dispatch('authenticate')
       }
     }
 

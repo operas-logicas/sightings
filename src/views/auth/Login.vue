@@ -23,7 +23,10 @@
             ]"
           >
         </div>
-        <v-errors :errors="validateErrors('handle')"></v-errors>
+        <v-errors
+          v-if="validateErrors('handle')"
+          :errors="validateErrors('handle')"
+        ></v-errors>
       </div>
 
       <div class="field">
@@ -40,7 +43,10 @@
             ]"
           >
         </div>
-        <v-errors :errors="validateErrors('password')"></v-errors>
+        <v-errors
+          v-if="validateErrors('password')"
+          :errors="validateErrors('password')"
+        ></v-errors>
       </div>
 
       <div>

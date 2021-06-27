@@ -15,7 +15,7 @@
     <section class="modal-card-body pb-3">
       <div class="content">
         <p v-if="sighting.img_path" class="image is-4by3 mb-3">
-          <img :src="`../storage/${sighting.img_path}`">
+          <img :src="sighting.img_path">
         </p>
         <p class="mb-3">
           {{ sighting.description }}

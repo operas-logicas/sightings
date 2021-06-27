@@ -5,7 +5,7 @@ import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 import SightingDetail from '../views/SightingDetail.vue'
 import SightingForm from '../views/SightingForm.vue'
-import Auth from '../services/AuthService'
+import store from '../store'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -18,15 +18,16 @@ const routes: RouteRecordRaw[] = [
     name: 'login',
     component: Login,
     beforeEnter: (to, from) => {
-      if (Auth.isLoggedIn()) return { name: 'home' }
+      if (store.state.isLoggedIn) return { name: 'home' }
     }
   },
   {
     path: '/post',
     name: 'post',
     component: SightingForm,
-    beforeEnter: (to, from) => {
-      if (!Auth.isLoggedIn()) return { name: 'login' }
+    beforeEnter: async (to, from) => {
+      await store.dispatch('authenticate')
+      if (!store.state.isLoggedIn) return { name: 'login' }
     }
   },
   {
@@ -34,7 +35,7 @@ const routes: RouteRecordRaw[] = [
     name: 'register',
     component: Register,
     beforeEnter: (to, from) => {
-      if (Auth.isLoggedIn()) return { name: 'home' }
+      if (store.state.isLoggedIn) return { name: 'home' }
     }
   },
   {

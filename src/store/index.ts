@@ -35,7 +35,7 @@ export default createStore({
       // console.log(state.sightings)
       state.sightings[
         state.sightings.findIndex(
-          sighting => sighting.id === payload.id
+          sighting => sighting._id === payload._id
         )
       ] = payload
     },

@@ -37,7 +37,10 @@
             ]"
           >
         </div>
-        <v-errors :errors="validateErrors('password')"></v-errors>
+        <v-errors
+          v-if="validateErrors('password')"
+          :errors="validateErrors('password')"
+        ></v-errors>
       </div>
 
       <div class="field">
@@ -54,7 +57,10 @@
             ]"
           >
         </div>
-        <v-errors :errors="validateErrors('password_confirmation')"></v-errors>
+        <v-errors
+          v-if="validateErrors('password_confirmation')"
+          :errors="validateErrors('password_confirmation')"
+        ></v-errors>
       </div>
 
       <div>
