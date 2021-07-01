@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const faker = require('faker')
 
 // Title prefix
@@ -78,9 +79,10 @@ class SightingFactory {
 
     this.state = this._state.slice(0, 1).toUpperCase() + this._state.slice(1)
 
-    // TODO img_path
-    this.img_path = ''
-  
+    this.img_path = _.random(1)
+      ? '/images/sighting-' + _.random(1, 5) + '.jpg'
+      : ''
+
     return {
       title: this.title,
       date: this.date,
