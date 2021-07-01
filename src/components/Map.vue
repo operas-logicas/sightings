@@ -160,6 +160,14 @@ export default defineComponent({
   height: 800px;
 }
 
+.leaflet-container {
+  cursor: pointer !important;
+}
+
+.leaflet-drag-target {
+  cursor: grab !important;
+}
+
 .leaflet-popup-content {
   margin: 0 !important;
   width: 320px !important;

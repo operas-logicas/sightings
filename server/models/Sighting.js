@@ -61,8 +61,9 @@ sightingSchema.statics.validateRequest =
         .required()
         .min(3),
 
-      // TODO pattern and custom message
       location: Joi.string()
+        .pattern(/^-?\d+.?\d*,{1}-?\d+.?\d*$/)
+        .rule({ message: '"location" must be valid format' })
         .required(),
 
       state: Joi.string()
