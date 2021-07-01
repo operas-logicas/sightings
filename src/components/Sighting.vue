@@ -38,7 +38,7 @@ export default defineComponent({
     )
 
     const niceDate = computed(
-      () => moment(props.sighting.date).format('ll')
+      () => moment.utc(props.sighting.date).format('ll')
     )
 
     const svg = computed(

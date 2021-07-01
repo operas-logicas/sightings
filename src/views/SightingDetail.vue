@@ -59,6 +59,10 @@ export default defineComponent({
       loading: true
     });
 
+    const niceDate = computed(
+      () => moment.utc(state.sighting.date).format('ll')
+    )
+
     const svg = computed(
       () => createAvatar(style, {
         seed: state.sighting.user_handle,
@@ -94,6 +98,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      niceDate,
       svg
     }
   }

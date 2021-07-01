@@ -37,9 +37,8 @@
         <div class="control">
           <input
             class="input"
-            type="text"
+            type="date"
             name="date"
-            placeholder="YYYY-MM-DD"
             v-model="date"
             :class="[
               { 'is-danger': validateErrors('date') }
@@ -47,7 +46,7 @@
           >
         </div>
         <p v-if="!validateErrors('date')" class="help">
-          Enter the date of the event <i>(Format: YYYY-MM-DD)</i>
+          Enter the date of the event
         </p>
         <v-errors
           v-if="validateErrors('date')"
@@ -127,10 +126,13 @@
                 type="file"
                 name="image"
               >
+
               <span class="file-cta">
                 <span class="file-icon">⇪</span>
                 <span class="file-label">Upload image...</span>
               </span>
+
+              <span class="help pl-4 pt-2">{{ imageFileName }}</span>
             </label>
           </div>
         </div>
@@ -163,6 +165,7 @@
 </template>
 
 <script lang="ts">
+import moment from 'moment'
 import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -188,6 +191,7 @@ export default defineComponent({
       date: '',
       description: '',
       image: null as unknown as File,
+      imageFileName: '',
       coords: [
         store.state.currentPosition[0],
         store.state.currentPosition[1]
@@ -204,6 +208,9 @@ export default defineComponent({
 
     function uploadFile(event: Event) {
       const element = event.target as HTMLInputElement
+      state.imageFileName = element.files && element.files[0]
+        ? element.files[0].name
+        : ''
       state.image = element.files && element.files[0]
         ? element.files[0]
         : null as unknown as File
@@ -234,7 +241,7 @@ export default defineComponent({
       // Submit form data
       const formData = new FormData()
       if (state.title) formData.append('title', state.title)
-      if (state.date) formData.append('date', state.date)
+      if (state.date) formData.append('date', moment.utc(state.date).format('YYYY-MM-DD'))
       if (state.description) formData.append('description', state.description)
       if (state.coords && state.coords[0] && state.coords[1])
         formData.append('location', state.coords.join(','))

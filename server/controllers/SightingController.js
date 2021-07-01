@@ -1,3 +1,4 @@
+const moment = require('moment')
 const Like = require('../models/Like')
 const Sighting = require('../models/Sighting')
 const User = require('../models/User')
@@ -72,6 +73,8 @@ class SightingController {
       return res.status(422).json(errorsResource(errors))
     }
 
+    // TODO handle image upload errors
+
     // Get user id from auth token
     const user_id = getUserId(req)
 
@@ -83,8 +86,7 @@ class SightingController {
     try {
       const sighting = new Sighting({
         title: req.body.title,
-        // TODO timezone offset
-        date: req.body.date,
+        date: moment.utc(req.body.date).toDate(),
         description: req.body.description,
         location: req.body.location,
         state: req.body.state,
