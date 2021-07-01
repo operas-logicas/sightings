@@ -58,9 +58,9 @@
         <p class="title is-1">
           Encounters!
         </p>
-        <p class="subtitle is-4">
+        <!-- <p class="subtitle is-4">
           UFO Sightings
-        </p>
+        </p> -->
       </div>
     </div>
   </section>
@@ -159,7 +159,7 @@ export default defineComponent({
 }
 
 .hero {
-  background-image: url("../src/assets/images/ufo-green-hero.jpg");
+  background-image: url("../src/assets/images/forest-mist-hero.jpg");
   background-position: top left;
   background-size: cover;
 }
@@ -188,5 +188,9 @@ export default defineComponent({
 .navbar-item.is-disabled:hover {
   background-color: inherit !important;
   cursor: text !important;
+}
+
+.navbar-item, .title {
+  text-shadow: -0.5px -0.5px 5px #171713, 0.5px 0.5px 5px #171713 !important;
 }
 </style>

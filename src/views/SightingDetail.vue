@@ -5,7 +5,7 @@
         {{ sighting.title }}
         <span class="is-block is-size-6 mt-1">(GPS: {{ sighting.location }})</span>
         <span class="is-block is-size-6 mt-4 mb-0">
-          <span class="is-size-5">👽</span>
+          <span class="is-size-5 pr-1" v-html="svg"></span>
           {{ sighting.user_handle }} &bull; {{ niceDate }}
         </span>
       </p>
@@ -32,8 +32,10 @@
 
 <script lang="ts">
 import moment from 'moment'
-import { defineComponent, reactive, toRefs, watch} from 'vue'
+import { computed, defineComponent, reactive, toRefs, watch} from 'vue'
 import { useRoute } from 'vue-router'
+import { createAvatar } from '@dicebear/avatars'
+import * as style from '@dicebear/avatars-identicon-sprites'
 import Likes from '../components/Likes.vue'
 import http from '../services/HttpService'
 
@@ -56,6 +58,16 @@ export default defineComponent({
       hasLikes: false,
       loading: true
     });
+
+    const svg = computed(
+      () => createAvatar(style, {
+        seed: state.sighting.user_handle,
+        width: 40,
+        height: 40,
+        backgroundColor: 'lightGreen',
+        colorLevel: 400    
+      })
+    );
 
     // 'onCreated' load sighting
     (async function() {
@@ -81,7 +93,8 @@ export default defineComponent({
     )
 
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      svg
     }
   }
 })
