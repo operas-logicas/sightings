@@ -99,9 +99,11 @@ export default defineComponent({
       store.commit('setCurrentPosition', state.coords)
 
       try {
+        // Get current state and save to store
         state.currentState = await getCurrentState(state.coords)
+        store.commit('setCurrentState', state.currentState)
       } catch (error) {
-        console.log('Could not get your current state from OpenCage Geocoding API')
+        console.error('Could not get state from OpenCage Geocoding API')
         state.error = true
       } finally {
         state.loading = false

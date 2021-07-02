@@ -18,11 +18,16 @@ export default createStore({
     apiUrl: `${protocol}//${hostname}:${port}/api`,
     sightings: [] as Sighting[],
     currentPosition: [] as number[],
+    currentState: '',
     isLoggedIn: false,
     user: null as unknown as User,
   },
 
   mutations: {
+    setCurrentState(state, currentState) {
+      state.currentState = currentState
+    },
+    
     setSightings(state, sightings: Sighting[]) {
       state.sightings = sightings
     },

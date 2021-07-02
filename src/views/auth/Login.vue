@@ -33,6 +33,7 @@
         <label class="label">Password</label>
         <div class="control">
           <input
+            @keypress.enter="login"
             class="input"
             type="password"
             name="password"

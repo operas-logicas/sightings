@@ -66,6 +66,7 @@
             :class="[
               { 'is-danger': validateErrors('location') }
             ]"
+            disabled
           >
           <input
             class="input ml-2"
@@ -76,11 +77,12 @@
             :class="[
               { 'is-danger': validateErrors('location') }
             ]"
+            disabled
           >
         </div>
         <p v-if="!validateErrors('location')" class="help">
-          Enter latitude and longitude where the event ocurred
-          <i>(current position on map shown by default)</i>
+          Latitude and longitude where the event occurred
+          <i>(current position selected on map)</i>
         </p>
         <v-errors
           v-if="validateErrors('location')"
@@ -169,7 +171,6 @@ import moment from 'moment'
 import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import getCurrentState from '../services/getCurrentState'
 import http from '../services/HttpService'
 
 interface Error {
@@ -196,7 +197,6 @@ export default defineComponent({
         store.state.currentPosition[0],
         store.state.currentPosition[1]
       ] as number[],
-      currentState: '',
       errors: null as unknown as Error,
       sending: false,
       error: false,
@@ -228,16 +228,8 @@ export default defineComponent({
         return
       }
 
-      // Get state from coords
-      try {
-        state.currentState = await getCurrentState(state.coords)
-        if (!state.currentState) throw new Error
-      } catch (error) {
-        console.error('Could not get state from OpenCage Geocoding API')
-        state.error = true
-      } finally {
-        state.sending = false
-      }
+      // Get current selected state from store
+      const currentState = computed((): string => store.state.currentState)
 
       // Submit form data
       const formData = new FormData()
@@ -246,7 +238,7 @@ export default defineComponent({
       if (state.description) formData.append('description', state.description)
       if (state.coords && state.coords[0] && state.coords[1])
         formData.append('location', state.coords.join(','))
-      if (state.currentState) formData.append('state', state.currentState)
+      if (currentState.value) formData.append('state', currentState.value)
       if (state.image) formData.append('image', state.image)
 
       try {

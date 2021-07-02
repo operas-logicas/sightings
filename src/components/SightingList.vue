@@ -26,7 +26,9 @@
     >
       Add your own sighting
     </button>
-    <p class="is-size-7 pt-1">(Click on the map first to get GPS coordinates)</p>
+    <p class="is-size-7 pt-1">
+      <i>(Select location on map first to autofill GPS coordinates where the sighting occurred)</i>
+    </p>
   </div>
 </template>
 

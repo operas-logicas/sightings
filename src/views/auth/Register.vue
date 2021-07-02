@@ -47,6 +47,7 @@
         <label class="label">Password Confirmation</label>
         <div class="control">
           <input
+            @keypress.enter="register"
             class="input"
             type="password"
             name="password_confirmation"
