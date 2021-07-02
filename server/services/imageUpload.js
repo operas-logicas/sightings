@@ -39,7 +39,6 @@ module.exports = function(req, res, next) {
     const { error: requestErrors } = Sighting.validateRequest(req.body)
     if (requestErrors) {
       for (const field in requestErrors.details) {
-        console.log(requestErrors.details[field].path + '\n')
         if (requestErrors.details[field].path == 'state')
           errors.location.push(requestErrors.details[field].message)
         else
