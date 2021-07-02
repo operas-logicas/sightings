@@ -15,7 +15,7 @@ module.exports = function(req, res, next) {
       const mimeType = fileTypes.test(file.mimetype)
   
       if (extName && mimeType) callback(null, true)
-      else callback(new Error('Only .png, .jpeg, and .jpg file types allowed.'))
+      else callback(new Error('Only .png, .jpeg, and .jpg file types allowed'))
     },
   
     limits: {

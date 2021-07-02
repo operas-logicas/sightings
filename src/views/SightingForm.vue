@@ -231,8 +231,9 @@ export default defineComponent({
       // Get state from coords
       try {
         state.currentState = await getCurrentState(state.coords)
+        if (!state.currentState) throw new Error
       } catch (error) {
-        console.log('Could not get your current state from OpenCage Geocoding API')
+        console.error('Could not get state from OpenCage Geocoding API')
         state.error = true
       } finally {
         state.sending = false

@@ -61,10 +61,11 @@ export default defineComponent({
         let sighting = null
 
         // Success
-        if (response.data.data) {
+        if (response.status === 201 && response.data.data) {
           state.likes++
           state.hasLikes = true
-          sighting = response.data.data
+          sighting = props.sighting
+          sighting.likes++
         } else {
           state.hasLikes = state.likes > 1
           state.likes--
@@ -76,14 +77,8 @@ export default defineComponent({
         store.commit('updateSighting', sighting)
 
       } catch (error) {
-        if (
-          error.response &&
-          error.response.status &&
-          error.response.status === 401
-        ) {
-          state.error = true
-        }
-        else state.error = true
+        console.error(error)
+        state.error = true
       }
     }
 

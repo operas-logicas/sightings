@@ -78,7 +78,7 @@ class SightingController {
       sighting.user_handle = user.handle
       sighting.likes = 0
 
-      return res.status(201).json({ data: sightingShowResource(sighting)})
+      return res.status(201).json({ data: sightingShowResource(sighting) })
 
     } catch (error) {
       return res.status(500).json({ error: error.message })

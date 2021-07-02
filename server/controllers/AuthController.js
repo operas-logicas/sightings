@@ -21,28 +21,33 @@ class AuthController {
     }
 
     // Validate handle
-    const user = await User.findOne({
-      handle: req.body.handle
-    })
-    if (!user) {
-      errors.handle.push('Invalid credentials!')
-      return res.status(422).json(errorsResource(errors))
+    try {
+      const user = await User.findOne({
+        handle: req.body.handle
+      })
+      if (!user) {
+        errors.handle.push('Invalid credentials!')
+        return res.status(422).json(errorsResource(errors))
+      }
+
+      // Validate password
+      const passwordsMatch = await User.validatePassword(
+        req.body.password, user.password
+      )
+
+      if (!passwordsMatch) {
+        errors.handle.push('Invalid credentials!')
+        return res.status(422).json(errorsResource(errors))
+      }
+
+      // Success! So generate and return auth token
+      const token = generateAuthToken(user)
+
+      return res.status(201).json({ token })
+      
+    } catch (error) {
+      return res.status(500).json({ error: error.message })
     }
-
-    // Validate password
-    const passwordsMatch = await User.validatePassword(
-      req.body.password, user.password
-    )
-
-    if (!passwordsMatch) {
-      errors.handle.push('Invalid credentials!')
-      return res.status(422).json(errorsResource(errors))
-    }
-
-    // Success! So generate and return auth token
-    const token = generateAuthToken(user)
-
-    return res.status(201).json({ token })
   }
 }
 
