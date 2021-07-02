@@ -2,7 +2,6 @@ const moment = require('moment')
 const Like = require('../models/Like')
 const Sighting = require('../models/Sighting')
 const User = require('../models/User')
-const errorsResource = require('../resources/errorsResource')
 const sightingShowResource = require('../resources/sightingShowResource')
 const { getUserId } = require('../services/AuthService')
 
@@ -54,27 +53,6 @@ class SightingController {
 
   // Create new sighting
   async store(req, res) {
-    const errors = {
-      title: [],
-      date: [],
-      description: [],
-      location: [],
-      state: [],
-      image: []
-    }
-
-    // Validate request
-    const { error } = Sighting.validateRequest(req.body)
-    if (error) {
-      // Return errors
-      for (const field in error.details)
-        errors[error.details[field].path].push(error.details[field].message)
-
-      return res.status(422).json(errorsResource(errors))
-    }
-
-    // TODO handle image upload errors
-
     // Get user id from auth token
     const user_id = getUserId(req)
 

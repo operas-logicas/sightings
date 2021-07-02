@@ -132,7 +132,7 @@
                 <span class="file-label">Upload image...</span>
               </span>
 
-              <span class="help pl-4 pt-2">{{ imageFileName }}</span>
+              <span class="help pl-4"><i>{{ imageFileName }}</i></span>
             </label>
           </div>
         </div>
