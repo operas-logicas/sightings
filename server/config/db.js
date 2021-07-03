@@ -9,10 +9,10 @@ module.exports = async function() {
       useUnifiedTopology: true
     })
 
-    console.log(`Connected to ${process.env.DB_URL}`)
+    console.log('\x1b[36m%s\x1b[0m\n', `Connected to ${process.env.DB_URL}`)
 
   } catch (error) {
-    console.log('Unable to connect to MongoDB!');
+    console.log('\n\x1b[31m%s\x1b[0m\n', 'Unable to connect to MongoDB!');
     throw error
   }
 }

@@ -26,7 +26,11 @@ const httpPort = process.env.HTTP_PORT
 http.createServer(app)
   .listen(httpPort, () => {
     console.log(
-      `Express HTTP server listening on ${httpPort} in ${process.env.NODE_ENV}...`
+      `\nExpress \x1b[33m%s\x1b[0m server listening on \x1b[33m%s\x1b[0m in ${
+        process.env.NODE_ENV === 'production'
+          ? '\x1b[35m%s\x1b[0m'
+          : '\x1b[34m%s\x1b[0m'
+        }...`, 'HTTP', httpPort, process.env.NODE_ENV
     )
   })
 
@@ -41,6 +45,10 @@ const httpsPort = process.env.HTTPS_PORT
 https.createServer(httpsServerOptions, app)
   .listen(httpsPort, () => {
     console.log(
-      `Express HTTPS server listening on ${httpsPort} in ${process.env.NODE_ENV}...`
+      `Express \x1b[32m%s\x1b[0m server listening on \x1b[32m%s\x1b[0m in ${
+        process.env.NODE_ENV === 'production'
+          ? '\x1b[35m%s\x1b[0m'
+          : '\x1b[34m%s\x1b[0m'
+        }...\n`, 'HTTPS', httpsPort, process.env.NODE_ENV
     )
   })
