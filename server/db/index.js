@@ -6,7 +6,7 @@ const likesSeeder = require('./likesSeeder')
 const sightingsSeeder = require('./sightingsSeeder')
 const usersSeeder = require('./usersSeeder')
 
-const app = express();
+const app = express()
 
 const rl = readline.createInterface({
   input: process.stdin,

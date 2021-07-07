@@ -36,6 +36,10 @@ function setProdEnv(app) {
 
   // Register middleware
   app.use(express.json())
+  app.use(
+    '/images/user',
+    express.static(__dirname + '/../../public/images/user/')
+  )
   app.use(history())
   app.use(express.static(__dirname + '/../../dist/'))
   app.use(helmet())
