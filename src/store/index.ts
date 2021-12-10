@@ -11,7 +11,7 @@ if (hostname === 'localhost')
   port = protocol === 'https:' ? 3001 : 3000
 
 // Production
-else port = protocol === 'https:' ? 5001 : 5000
+else port = protocol === 'https:' ? 443 : 80
 
 export default createStore({
   state: {

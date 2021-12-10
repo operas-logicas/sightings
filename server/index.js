@@ -35,20 +35,20 @@ http.createServer(app)
   })
 
 // Start HTTPS server
-const httpsServerOptions = {
-  key: fs.readFileSync(__dirname + '/../https/key.pem'),
-  cert: fs.readFileSync(__dirname + '/../https/cert.pem')
-}
+// const httpsServerOptions = {
+//   key: fs.readFileSync(__dirname + '/../https/key.pem'),
+//   cert: fs.readFileSync(__dirname + '/../https/cert.pem')
+// }
 
-const httpsPort = process.env.HTTPS_PORT
+// const httpsPort = process.env.HTTPS_PORT
 
-https.createServer(httpsServerOptions, app)
-  .listen(httpsPort, () => {
-    console.log(
-      `Express \x1b[32m%s\x1b[0m server listening on \x1b[32m%s\x1b[0m in ${
-        process.env.NODE_ENV === 'production'
-          ? '\x1b[35m%s\x1b[0m'
-          : '\x1b[34m%s\x1b[0m'
-        }...\n`, 'HTTPS', httpsPort, process.env.NODE_ENV
-    )
-  })
+// https.createServer(httpsServerOptions, app)
+//   .listen(httpsPort, () => {
+//     console.log(
+//       `Express \x1b[32m%s\x1b[0m server listening on \x1b[32m%s\x1b[0m in ${
+//         process.env.NODE_ENV === 'production'
+//           ? '\x1b[35m%s\x1b[0m'
+//           : '\x1b[34m%s\x1b[0m'
+//         }...\n`, 'HTTPS', httpsPort, process.env.NODE_ENV
+//     )
+//   })
